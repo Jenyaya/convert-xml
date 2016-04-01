@@ -3,7 +3,7 @@ convert-xml
 
 Just for convert imput XML to required output with new format.
 
-### How to use
+### How to setup
 
 * [Install Git for Windows](https://git-scm.com/download/win)
 * [install Ruby v2.0](http://rubyinstaller.org/downloads/)
@@ -19,3 +19,7 @@ Just for convert imput XML to required output with new format.
     `bundle install`
 
 
+### How to use
+* You can use help:
+
+ `ruby convert_xmls.rb --help`
