@@ -23,3 +23,11 @@ Just for convert imput XML to required output with new format.
 * You can use help:
 
  `ruby convert_xmls.rb --help`
+
+* Run for file by file path:
+
+`ruby convert_xmls.rb --input '\<file_path>\input_example.xml'`
+
+* Run for all XML files in folder:
+
+`ruby convert_xmls.rb --input '\<file_path>\'`
