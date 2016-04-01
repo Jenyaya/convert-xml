@@ -4,7 +4,6 @@ def convert_xml(xml_input_file)
 
   parsed_xml = Nokogiri::XML(xml_input_file, nil, 'windows-1251', Nokogiri::XML::ParseOptions::DEFAULT_XML)
 
-  puts parsed_xml
 
 # changing xsd to J1201008.xsd
   puts 'PHASE 1 - changing xsd to J1201008.xsd'
@@ -12,17 +11,12 @@ def convert_xml(xml_input_file)
   parsed_xml.xpath('//DECLAR').attr('xsi:noNamespaceSchemaLocation', 'J1201008.xsd')
 
 
-# save file
-  File.open("./output/output_example_1.xml", 'w') { |f| f.write parsed_xml }
-
 # see http://stackoverflow.com/questions/5459832/how-can-i-make-empty-tags-self-closing-with-nokogiri
 
   puts 'PHASE 2 - changing C_DOC_VER from 4 to 8'
 
   parsed_xml.xpath('//DECLAR//DECLARHEAD//C_DOC_VER').first.content = 8
 
-# save file
-  File.open("./output/output_example_2.xml", 'w') { |f| f.write parsed_xml }
 
   puts 'PHASE 3 - changing RXXXXG7 node to RXXXXG010 for each such node'
 
@@ -30,8 +24,6 @@ def convert_xml(xml_input_file)
     node.name = 'RXXXXG010'
   end
 
-# save file
-  File.open("./output/output_example_3.xml", 'w') { |f| f.write parsed_xml }
 
   puts 'PHASE 4 - changing H10G1S node to HBOS for each such node'
 
@@ -39,18 +31,14 @@ def convert_xml(xml_input_file)
     node.name = 'HBOS'
   end
 
-# save file
-  File.open("./output/output_example_4.xml", 'w') { |f| f.write parsed_xml }
 
-
-
-  # puts 'PHASE 5 - verifying by XSD'
-  #
-  # xsd = Nokogiri::XML::Schema(File.read('./xsds/J1201008.xsd'))
-  #
-  # xsd.validate(parsed_xml).each do |error|
-  #   puts error.message
-  # end
+# puts 'PHASE 5 - verifying by XSD'
+#
+# xsd = Nokogiri::XML::Schema(File.read('./xsds/J1201008.xsd'))
+#
+# xsd.validate(parsed_xml).each do |error|
+#   puts error.message
+# end
   return parsed_xml
 
 end
@@ -58,19 +46,30 @@ end
 
 def convert_single_file(file_path)
 
-  puts 'Reading file: ' + file_path.to_s
+  puts 'Reading file: ' + file_path
   xml_input_file = File.open(file_path) if File.exist? file_path
-  puts xml_input_file
-  puts 'Started converting for ' + file_path.to_s
-  convert_xml xml_input_file
+
+  puts 'Started converting for ' + file_path
+
+  converted_xml = convert_xml xml_input_file
+
+  puts "Saving to /output/#{File.basename(file_path)} "
+
+  Dir.mkdir './output' if !Dir.exist?  'output'
+
+  File.open("./output/#{File.basename(file_path)}", 'w') { |f| f.write converted_xml }
 
   xml_input_file.close
+
+
 end
 
 def convert_all_in_folder(folder_path)
 
   Dir.entries(folder_path).each do |file|
-    convert_single_file folder_path + '/' + file unless File.directory?(file)
+    convert_single_file(folder_path + '/' + file )unless File.directory?(file)
   end
 
 end
+
+convert_all_in_folder('./input')

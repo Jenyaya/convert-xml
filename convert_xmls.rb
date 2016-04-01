@@ -18,10 +18,9 @@ if Dir.exist?(options[:input])
 
 elsif File.exist?(options[:input])
   # run as single file
-
+  convert_single_file options[:input]
 else
   raise 'No such file or folder found: ' + options[:input]
-
 end
 
 
