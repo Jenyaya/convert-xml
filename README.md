@@ -31,3 +31,5 @@ Just for convert imput XML to required output with new format.
 * Run for all XML files in folder:
 
 `ruby convert_xmls.rb --input '\<file_path>\'`
+
+* Results you will get in ./output folder
