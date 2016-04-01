@@ -55,7 +55,7 @@ def convert_single_file(file_path)
 
   puts "Saving to /output/#{File.basename(file_path)} "
 
-  Dir.mkdir './output' if !Dir.exist?  'output'
+  Dir.mkdir './output' if !Dir.exist? 'output'
 
   File.open("./output/#{File.basename(file_path)}", 'w') { |f| f.write converted_xml }
 
@@ -67,9 +67,8 @@ end
 def convert_all_in_folder(folder_path)
 
   Dir.entries(folder_path).each do |file|
-    convert_single_file(folder_path + '/' + file )unless File.directory?(file)
+    convert_single_file(folder_path + '/' + file) unless File.directory?(file)
   end
 
 end
 
-convert_all_in_folder('./input')
